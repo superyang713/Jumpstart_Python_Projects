@@ -20,19 +20,24 @@ def run_event_loop():
         cmd = cmd.lower().strip()
 
         if cmd == 'l':
-            list_entries()
+            list_entries(journal_data)
         elif cmd == 'a':
-            add_entries()
+            add_entries(journal_data)
         elif cmd != 'x':
             print("Sorry, we don't understand '{}'.".format(cmd))
+    print('Done, GoodBye!')
 
 
-def list_entries():
-    print('list entries')
+def list_entries(data):
+    print("Your jounal entries: ")
+    entries = reversed(data)
+    for i, entry in enumerate(entries, 1):
+        print('* [{}] {}'.format(i, entry))
 
 
-def add_entries():
-    print('adding entries')
+def add_entries(data):
+    text = input("Type your entry, <enter> to exit: ")
+    data.append(text)
 
 
 if __name__ == '__main__':
