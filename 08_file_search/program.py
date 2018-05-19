@@ -49,29 +49,23 @@ def get_search_text_from_user():
 
 
 def search_folders(folder, text):
-    all_matches = []
     items = os.listdir(folder)
     for item in items:
         full_item = os.path.join(folder, item)
         if os.path.isdir(full_item):
-            matches = search_folders(full_item, text)
-            all_matches.extend(matches)
+            yield from search_folders(full_item, text)
         else:
-            matches = search_file(full_item, text)
-            all_matches.extend(matches)
-    return all_matches
+            yield from search_file(full_item, text)
 
 
 def search_file(filename, search_text):
-    matches = []
     with open(filename, 'r', encoding='utf-8') as fin:
         line_num = 0
         for line in fin:
             line_num += 1
             if line.find(search_text) >= 0:
                 m = SearchResult(line=line_num, file=filename, text=line)
-                matches.append(m)
-        return matches
+                yield m
 
 
 if __name__ == '__main__':
